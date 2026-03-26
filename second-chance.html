@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROOT — Second Chance Recruitment</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --mud: #1a1710;
+    --bark: #2b2518;
+    --moss: #2d3a1e;
+    --sage: #4a5e35;
+    --lichen: #6b7c52;
+    --mold: #8a9870;
+    --rust: #7a4a2a;
+    --ochre: #b8862a;
+    --fog: #c8c4b0;
+    --ash: #e8e4d0;
+    --rain: #3a4a5a;
+    --slate: #4a5060;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--mud);
+    color: var(--ash);
+    font-family: 'Courier Prime', monospace;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    background: linear-gradient(to bottom, rgba(26,23,16,0.97), transparent);
+    border-bottom: 1px solid rgba(107,124,82,0.2);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.3em;
+    color: var(--mold);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--ochre); }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--fog);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    opacity: 0.7;
+  }
+
+  .nav-links a:hover { color: var(--ochre); opacity: 1; }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 3rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(45,58,30,0.6) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(58,74,90,0.4) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(26,23,16,1) 0%, rgba(43,37,24,0.8) 100%);
+    z-index: 0;
+  }
+
+  /* SVG botanical background */
+  .hero-botanical {
+    position: absolute;
+    right: -5%;
+    top: -5%;
+    width: 55%;
+    height: 110%;
+    opacity: 0.12;
+    z-index: 1;
+  }
+
+  .hero-botanical-left {
+    position: absolute;
+    left: -3%;
+    bottom: -10%;
+    width: 30%;
+    height: 70%;
+    opacity: 0.08;
+    z-index: 1;
+    transform: scaleX(-1);
+  }
+
+  .crack-line {
+    position: absolute;
+    background: var(--lichen);
+    opacity: 0.15;
+    z-index: 1;
+  }
+
+  .crack-1 { top: 20%; left: 0; width: 40%; height: 1px; transform: rotate(-2deg); }
+  .crack-2 { top: 40%; right: 0; width: 25%; height: 1px; transform: rotate(1.5deg); }
+  .crack-3 { bottom: 30%; left: 15%; width: 20%; height: 1px; transform: rotate(-3deg); }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--lichen);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--lichen);
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    font-weight: 900;
+    line-height: 0.95;
+    margin-bottom: 2rem;
+    color: var(--ash);
+  }
+
+  .hero-title .italic { font-style: italic; color: var(--mold); }
+  .hero-title .accent { color: var(--ochre); }
+
+  .hero-sub {
+    max-width: 500px;
+    line-height: 1.8;
+    color: var(--fog);
+    font-size: 0.95rem;
+    margin-bottom: 3rem;
+    opacity: 0.8;
+    border-left: 2px solid var(--sage);
+    padding-left: 1.5rem;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--sage);
+    color: var(--ash);
+    border: none;
+    padding: 1rem 2.5rem;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: crosshair;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--ochre);
+    transform: translateX(-101%);
+    transition: transform 0.4s cubic-bezier(0.77,0,0.175,1);
+  }
+
+  .btn-primary:hover::before { transform: translateX(0); }
+  .btn-primary span { position: relative; z-index: 1; }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--fog);
+    border: 1px solid rgba(107,124,82,0.4);
+    padding: 1rem 2rem;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: crosshair;
+    transition: all 0.3s;
+  }
+
+  .btn-ghost:hover { border-color: var(--lichen); color: var(--ash); }
+
+  .hero-stat-strip {
+    position: absolute;
+    right: 3rem;
+    bottom: 5rem;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    text-align: right;
+  }
+
+  .stat-item .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    color: var(--mold);
+    display: block;
+    line-height: 1;
+  }
+
+  .stat-item .label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--lichen);
+    text-transform: uppercase;
+  }
+
+  /* ===== MARQUEE ===== */
+  .marquee-strip {
+    background: var(--moss);
+    border-top: 1px solid rgba(107,124,82,0.3);
+    border-bottom: 1px solid rgba(107,124,82,0.3);
+    padding: 1rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .marquee-inner {
+    display: inline-flex;
+    animation: marquee 30s linear infinite;
+    gap: 3rem;
+  }
+
+  .marquee-inner span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    color: var(--lichen);
+    padding: 0 1rem;
+  }
+
+  .marquee-inner .dot {
+    color: var(--ochre);
+    font-size: 0.5rem;
+    vertical-align: middle;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ===== SECTIONS ===== */
+  section { padding: 7rem 3rem; }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--lichen);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--ash);
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title em { color: var(--mold); font-style: italic; }
+
+  /* ===== WHO WE WELCOME ===== */
+  .who-section {
+    background: var(--bark);
+    border-top: 1px solid rgba(107,124,82,0.15);
+    border-bottom: 1px solid rgba(107,124,82,0.15);
+  }
+
+  .who-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .who-left .section-label { margin-bottom: 0.5rem; }
+
+  .who-left p {
+    color: var(--fog);
+    line-height: 1.9;
+    font-size: 0.9rem;
+    opacity: 0.85;
+    margin-top: 1.5rem;
+  }
+
+  .who-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .who-card {
+    background: rgba(45,58,30,0.3);
+    border: 1px solid rgba(107,124,82,0.2);
+    padding: 1.5rem 2rem;
+    position: relative;
+    transition: all 0.4s;
+    cursor: crosshair;
+    overflow: hidden;
+  }
+
+  .who-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--sage);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.4s;
+  }
+
+  .who-card:hover { background: rgba(45,58,30,0.5); border-color: rgba(107,124,82,0.4); }
+  .who-card:hover::before { transform: scaleY(1); }
+
+  .who-card-icon {
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    display: block;
+    filter: grayscale(0.5);
+  }
+
+  .who-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--ash);
+    margin-bottom: 0.5rem;
+  }
+
+  .who-card p {
+    font-size: 0.8rem;
+    color: var(--fog);
+    opacity: 0.7;
+    line-height: 1.7;
+  }
+
+  .who-card .tag {
+    display: inline-block;
+    margin-top: 0.75rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--lichen);
+    border: 1px solid rgba(107,124,82,0.3);
+    padding: 0.2rem 0.6rem;
+  }
+
+  /* ===== PHILOSOPHY ===== */
+  .philosophy-section {
+    background: var(--mud);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .philosophy-section::after {
+    content: 'GROW';
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12rem;
+    color: rgba(107,124,82,0.04);
+    letter-spacing: 0.1em;
+    pointer-events: none;
+  }
+
+  .philosophy-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .philosophy-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2.8rem);
+    font-style: italic;
+    color: var(--fog);
+    line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto 5rem;
+    text-align: center;
+    position: relative;
+    padding: 2rem 3rem;
+  }
+
+  .philosophy-quote::before, .philosophy-quote::after {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 6rem;
+    color: var(--moss);
+    line-height: 0;
+    position: absolute;
+  }
+
+  .philosophy-quote::before { top: 2rem; left: 0; }
+  .philosophy-quote::after { bottom: 0rem; right: 0; }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .pillar {
+    background: var(--bark);
+    padding: 3rem 2.5rem;
+    border-top: 3px solid transparent;
+    transition: border-color 0.3s;
+    position: relative;
+  }
+
+  .pillar:hover { border-top-color: var(--sage); }
+
+  .pillar-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: rgba(107,124,82,0.2);
+    display: block;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .pillar h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--ash);
+  }
+
+  .pillar p {
+    font-size: 0.82rem;
+    color: var(--fog);
+    opacity: 0.7;
+    line-height: 1.8;
+  }
+
+  /* ===== HOW IT WORKS ===== */
+  .process-section {
+    background: var(--moss);
+    position: relative;
+  }
+
+  .process-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .process-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 5rem;
+  }
+
+  .process-header p {
+    font-size: 0.9rem;
+    color: var(--fog);
+    line-height: 1.9;
+    opacity: 0.8;
+    margin-top: auto;
+    padding-top: 1rem;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    position: relative;
+  }
+
+  .steps::before {
+    content: '';
+    position: absolute;
+    top: 1.5rem;
+    left: 2rem;
+    right: 2rem;
+    height: 1px;
+    background: rgba(138,152,112,0.3);
+  }
+
+  .step {
+    position: relative;
+    text-align: center;
+  }
+
+  .step-circle {
+    width: 3rem;
+    height: 3rem;
+    background: var(--bark);
+    border: 1px solid var(--lichen);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    color: var(--mold);
+    margin: 0 auto 1.5rem;
+    transition: all 0.3s;
+    cursor: crosshair;
+  }
+
+  .step:hover .step-circle {
+    background: var(--sage);
+    color: var(--ash);
+    border-color: var(--sage);
+  }
+
+  .step h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--ash);
+    margin-bottom: 0.75rem;
+  }
+
+  .step p {
+    font-size: 0.78rem;
+    color: var(--fog);
+    opacity: 0.7;
+    line-height: 1.7;
+  }
+
+  /* ===== TESTIMONIALS ===== */
+  .testimonials-section {
+    background: var(--bark);
+    border-top: 1px solid rgba(107,124,82,0.15);
+  }
+
+  .testimonials-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .testimonials-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .testimony {
+    background: rgba(26,23,16,0.6);
+    border: 1px solid rgba(107,124,82,0.15);
+    padding: 2.5rem;
+    position: relative;
+    transition: border-color 0.3s;
+  }
+
+  .testimony:hover { border-color: rgba(107,124,82,0.35); }
+
+  .testimony.featured {
+    grid-column: span 2;
+    background: rgba(45,58,30,0.3);
+  }
+
+  .testimony-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--fog);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+
+  .testimony-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .author-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--moss);
+    border: 1px solid var(--lichen);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--mold);
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .author-name {
+    font-size: 0.8rem;
+    color: var(--ash);
+    font-weight: 700;
+  }
+
+  .author-role {
+    font-size: 0.7rem;
+    color: var(--lichen);
+    letter-spacing: 0.1em;
+  }
+
+  /* ===== ECO COMMITMENT ===== */
+  .eco-section {
+    background: var(--mud);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .eco-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .eco-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .eco-visual {
+    position: relative;
+    height: 400px;
+  }
+
+  .eco-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .eco-ring-1 {
+    width: 360px; height: 360px;
+    border-color: rgba(107,124,82,0.12);
+    top: 20px; left: 20px;
+    animation: slowspin 40s linear infinite;
+  }
+
+  .eco-ring-2 {
+    width: 260px; height: 260px;
+    border-color: rgba(107,124,82,0.2);
+    top: 70px; left: 70px;
+    animation: slowspin 25s linear infinite reverse;
+  }
+
+  .eco-ring-3 {
+    width: 160px; height: 160px;
+    border-color: rgba(107,124,82,0.4);
+    top: 120px; left: 120px;
+  }
+
+  .eco-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .eco-center .big-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: var(--mold);
+    display: block;
+    line-height: 1;
+  }
+
+  .eco-center .big-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--lichen);
+    text-transform: uppercase;
+  }
+
+  @keyframes slowspin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .eco-right .section-label { margin-bottom: 0.75rem; }
+
+  .eco-right p {
+    font-size: 0.88rem;
+    color: var(--fog);
+    line-height: 1.9;
+    opacity: 0.8;
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .eco-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .eco-badge {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(107,124,82,0.2);
+    background: rgba(45,58,30,0.2);
+  }
+
+  .eco-badge .badge-icon { font-size: 1.2rem; }
+  .eco-badge .badge-text { font-size: 0.78rem; color: var(--fog); opacity: 0.85; }
+
+  /* ===== APPLY ===== */
+  .apply-section {
+    background: var(--moss);
+    text-align: center;
+    padding: 8rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .apply-section::before {
+    content: 'APPLY';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20rem;
+    color: rgba(26,23,16,0.15);
+    letter-spacing: 0.05em;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .apply-inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+
+  .apply-inner .section-title { text-align: center; font-size: clamp(2.5rem, 6vw, 4.5rem); }
+  .apply-inner p { font-size: 0.9rem; color: var(--fog); opacity: 0.8; line-height: 1.9; margin: 1.5rem auto 3rem; max-width: 500px; }
+
+  .apply-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 480px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-group label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--lichen);
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: rgba(26,23,16,0.6);
+    border: 1px solid rgba(107,124,82,0.25);
+    color: var(--ash);
+    padding: 0.85rem 1rem;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.3s;
+    cursor: crosshair;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--lichen); }
+
+  .form-group select option { background: var(--bark); }
+
+  .form-group textarea { resize: vertical; min-height: 100px; }
+
+  .form-submit {
+    margin-top: 0.5rem;
+    width: 100%;
+    background: var(--ochre);
+    color: var(--mud);
+    border: none;
+    padding: 1.1rem;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: crosshair;
+    transition: all 0.3s;
+  }
+
+  .form-submit:hover { background: var(--ash); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--mud);
+    border-top: 1px solid rgba(107,124,82,0.2);
+    padding: 4rem 3rem 2rem;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  .footer-brand .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.3em;
+    color: var(--mold);
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .footer-brand .logo span { color: var(--ochre); }
+
+  .footer-brand p {
+    font-size: 0.8rem;
+    color: var(--fog);
+    opacity: 0.6;
+    line-height: 1.8;
+    max-width: 240px;
+  }
+
+  .footer-col h4 {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--lichen);
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-col ul a {
+    font-size: 0.8rem;
+    color: var(--fog);
+    opacity: 0.6;
+    text-decoration: none;
+    transition: opacity 0.2s, color 0.2s;
+  }
+
+  .footer-col ul a:hover { opacity: 1; color: var(--ash); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(107,124,82,0.1);
+    padding-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-bottom p {
+    font-size: 0.7rem;
+    color: var(--lichen);
+    opacity: 0.6;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-bottom .eco-pledge {
+    font-size: 0.7rem;
+    color: var(--lichen);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-up {
+    opacity: 0;
+    animation: fadeUp 1s ease forwards;
+  }
+
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+  .delay-3 { animation-delay: 0.45s; }
+  .delay-4 { animation-delay: 0.6s; }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    .hero { padding: 0 1.5rem 4rem; }
+    .hero-stat-strip { display: none; }
+    .who-grid, .process-header, .eco-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .pillars, .steps { grid-template-columns: 1fr; }
+    .steps::before { display: none; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .testimony.featured { grid-column: span 1; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .eco-visual { height: 280px; }
+    .eco-ring-1 { width: 260px; height: 260px; top: 10px; left: 10px; }
+    .eco-ring-2 { width: 180px; height: 180px; top: 50px; left: 50px; }
+    .eco-ring-3 { width: 100px; height: 100px; top: 90px; left: 90px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">R<span>OO</span>T</a>
+  <ul class="nav-links">
+    <li><a href="#who">Who We Welcome</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#stories">Stories</a></li>
+    <li><a href="#planet">Our Planet</a></li>
+    <li><a href="#apply">Apply</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <!-- SVG botanical right -->
+  <svg class="hero-botanical" viewBox="0 0 500 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M400 800 C380 700 300 650 350 500 C400 350 480 300 460 150 C440 50 380 20 400 0" stroke="#6b7c52" stroke-width="2" fill="none"/>
+    <ellipse cx="350" cy="500" rx="120" ry="60" fill="#4a5e35" opacity="0.4" transform="rotate(-20 350 500)"/>
+    <ellipse cx="380" cy="350" rx="90" ry="45" fill="#4a5e35" opacity="0.3" transform="rotate(25 380 350)"/>
+    <ellipse cx="420" cy="220" rx="70" ry="35" fill="#4a5e35" opacity="0.25" transform="rotate(-15 420 220)"/>
+    <path d="M350 500 C250 480 180 520 160 600" stroke="#6b7c52" stroke-width="1.5" fill="none"/>
+    <path d="M380 350 C290 330 240 380 200 440" stroke="#6b7c52" stroke-width="1.5" fill="none"/>
+    <circle cx="160" cy="610" r="40" fill="#2d3a1e" opacity="0.4"/>
+    <circle cx="200" cy="450" r="25" fill="#2d3a1e" opacity="0.3"/>
+    <path d="M460 150 C520 100 530 200 480 180" stroke="#6b7c52" stroke-width="1" fill="none"/>
+    <path d="M450 180 C400 140 380 80 420 60" stroke="#6b7c52" stroke-width="1" fill="none"/>
+  </svg>
+
+  <!-- SVG botanical left -->
+  <svg class="hero-botanical-left" viewBox="0 0 300 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M150 500 C170 400 120 350 140 250 C160 150 200 100 180 20" stroke="#6b7c52" stroke-width="1.5" fill="none"/>
+    <ellipse cx="140" cy="300" rx="80" ry="40" fill="#4a5e35" opacity="0.5" transform="rotate(15 140 300)"/>
+    <ellipse cx="160" cy="200" rx="60" ry="30" fill="#4a5e35" opacity="0.35" transform="rotate(-20 160 200)"/>
+    <path d="M140 300 C80 280 50 320 30 380" stroke="#6b7c52" stroke-width="1" fill="none"/>
+  </svg>
+
+  <div class="crack-line crack-1"></div>
+  <div class="crack-line crack-2"></div>
+  <div class="crack-line crack-3"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow fade-up">Second Chance Recruitment Initiative</div>
+    <h1 class="hero-title fade-up delay-1">
+      From<br>
+      <span class="italic">broken</span><br>
+      <span class="accent">soil,</span><br>
+      roots grow.
+    </h1>
+    <p class="hero-sub fade-up delay-2">
+      ROOT connects overlooked, marginalized, and system-involved individuals with employers who understand that a difficult past does not define a person's future contribution.
+    </p>
+    <div class="hero-cta-group fade-up delay-3">
+      <a href="#apply" class="btn-primary"><span>Begin Your Application</span></a>
+      <a href="#who" class="btn-ghost">Learn More</a>
+    </div>
+  </div>
+
+  <div class="hero-stat-strip fade-up delay-4">
+    <div class="stat-item">
+      <span class="num">4,200+</span>
+      <span class="label">People Placed</span>
+    </div>
+    <div class="stat-item">
+      <span class="num">380</span>
+      <span class="label">Partner Employers</span>
+    </div>
+    <div class="stat-item">
+      <span class="num">91%</span>
+      <span class="label">12-Month Retention</span>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span>SECOND CHANCES</span><span class="dot">●</span>
+    <span>HUMAN DIGNITY</span><span class="dot">●</span>
+    <span>FAIR EMPLOYMENT</span><span class="dot">●</span>
+    <span>REINTEGRATION</span><span class="dot">●</span>
+    <span>COMMUNITY ROOTS</span><span class="dot">●</span>
+    <span>SUSTAINABLE FUTURES</span><span class="dot">●</span>
+    <span>GROW FROM THE CRACKS</span><span class="dot">●</span>
+    <span>SECOND CHANCES</span><span class="dot">●</span>
+    <span>HUMAN DIGNITY</span><span class="dot">●</span>
+    <span>FAIR EMPLOYMENT</span><span class="dot">●</span>
+    <span>REINTEGRATION</span><span class="dot">●</span>
+    <span>COMMUNITY ROOTS</span><span class="dot">●</span>
+    <span>SUSTAINABLE FUTURES</span><span class="dot">●</span>
+    <span>GROW FROM THE CRACKS</span><span class="dot">●</span>
+  </div>
+</div>
+
+<!-- WHO WE WELCOME -->
+<section class="who-section" id="who">
+  <div class="who-grid">
+    <div class="who-left reveal">
+      <div class="section-label">Who We Welcome</div>
+      <h2 class="section-title">Society labels people.<br><em>We see potential.</em></h2>
+      <p>
+        Every person arriving at our door carries a story the world often refuses to hear. We exist to listen — and to act. ROOT was built on the principle that exclusion is the real failure, not the people being excluded.
+      </p>
+      <p>
+        We partner with employers who share our belief that hiring from the margins is not charity — it is smart, sustainable, and deeply human.
+      </p>
+    </div>
+    <div class="who-cards">
+      <div class="who-card reveal">
+        <span class="who-card-icon">⚖️</span>
+        <h3>Justice-Involved Individuals</h3>
+        <p>Those with criminal records — misdemeanors or felonies — who have served their time and are ready to rebuild their lives with meaningful employment.</p>
+        <span class="tag">Fair Chance Hiring</span>
+      </div>
+      <div class="who-card reveal">
+        <span class="who-card-icon">🧠</span>
+        <h3>Mental Health Survivors</h3>
+        <p>People navigating depression, anxiety, PTSD, bipolar disorder, and other conditions who deserve workplaces designed for real human beings, not performances.</p>
+        <span class="tag">Mental Health Inclusive</span>
+      </div>
+      <div class="who-card reveal">
+        <span class="who-card-icon">♿</span>
+        <h3>People with Disabilities</h3>
+        <p>Individuals with physical, cognitive, or sensory disabilities who are frequently overlooked by traditional hiring systems despite their skills and drive.</p>
+        <span class="tag">Accessibility First</span>
+      </div>
+      <div class="who-card reveal">
+        <span class="who-card-icon">🌱</span>
+        <h3>Others Facing Barriers</h3>
+        <p>Long-term unemployed, survivors of homelessness or addiction, those aging out of foster care — anyone society has pushed to the margins.</p>
+        <span class="tag">Barrier-Free Pathways</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy-section" id="philosophy">
+  <div class="philosophy-inner">
+    <div class="philosophy-quote reveal">
+      The cracks in concrete are not failures of the concrete. They are invitations for something living to push through.
+    </div>
+    <div class="pillars">
+      <div class="pillar reveal">
+        <span class="pillar-num">01</span>
+        <h3>Radical Dignity</h3>
+        <p>We do not rescue people. We stand beside them. Every individual who walks through our process is treated as capable, intelligent, and deserving — because they are.</p>
+      </div>
+      <div class="pillar reveal">
+        <span class="pillar-num">02</span>
+        <h3>Systemic Honesty</h3>
+        <p>The systems that marginalize people are broken, not the people themselves. We name that plainly and work within the world as it is while fighting to change it.</p>
+      </div>
+      <div class="pillar reveal">
+        <span class="pillar-num">03</span>
+        <h3>Rooted in Earth</h3>
+        <p>Our environmental commitment is inseparable from our human one. We prioritize green employers and model carbon-conscious operations because we cannot heal people on a dying planet.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="process-section" id="process">
+  <div class="process-inner">
+    <div class="process-header">
+      <div class="reveal">
+        <div class="section-label">The Process</div>
+        <h2 class="section-title">A path built <em>for you,</em><br>not around you.</h2>
+      </div>
+      <p class="reveal">
+        Traditional recruitment was never designed with you in mind. ROOT's process is different at every step — low-barrier entry, trauma-informed support, and employers who have signed our Fair Chance Pledge before they ever read a résumé.
+      </p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-circle">01</div>
+        <h4>Open Application</h4>
+        <p>No background check upfront. No résumé gatekeeping. Just you, your story, and what you want to build next.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-circle">02</div>
+        <h4>Human Intake Call</h4>
+        <p>A real conversation with a ROOT advocate — not an algorithm. We learn what you need, not just what you've done.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-circle">03</div>
+        <h4>Skills Mapping</h4>
+        <p>We find what you're good at and translate that into opportunities, including roles you may have never considered.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-circle">04</div>
+        <h4>Matched Placement</h4>
+        <p>We introduce you only to employers who have committed to fair, respectful, sustainable hiring practices.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section" id="stories">
+  <div class="testimonials-inner">
+    <div class="testimonials-header reveal">
+      <div>
+        <div class="section-label">Voices from the Ground</div>
+        <h2 class="section-title">They were <em>written off.</em><br>Then they wrote back.</h2>
+      </div>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimony featured reveal">
+        <p class="testimony-quote">
+          "I had a felony on my record for twelve years. Every application, every interview, every hopeful moment ended the same way. ROOT was the first organization that didn't flinch. They placed me with a construction company that gave me a title, a salary, and — for the first time in a decade — a reason to set an alarm."
+        </p>
+        <div class="testimony-author">
+          <div class="author-avatar">DM</div>
+          <div>
+            <div class="author-name">D. Morales</div>
+            <div class="author-role">Site Supervisor — placed 2022 · Felony record</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimony reveal">
+        <p class="testimony-quote">
+          "Living with bipolar disorder, I've lost more jobs than I can count — not because of performance, but because of stigma. ROOT matched me with a team that actually understands disclosure isn't weakness."
+        </p>
+        <div class="testimony-author">
+          <div class="author-avatar">JK</div>
+          <div>
+            <div class="author-name">J. Krishnamurthy</div>
+            <div class="author-role">Data Analyst — placed 2023 · Mental health</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimony reveal">
+        <p class="testimony-quote">
+          "I use a wheelchair. My skills are sharper than most people in my field. ROOT found an employer who saw that immediately."
+        </p>
+        <div class="testimony-author">
+          <div class="author-avatar">TW</div>
+          <div>
+            <div class="author-name">T. Williams</div>
+            <div class="author-role">UX Designer — placed 2024 · Physical disability</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimony reveal">
+        <p class="testimony-quote">
+          "Five years sober, still carrying the weight of my past. ROOT understood that recovery is not a liability — it's evidence of extraordinary resilience."
+        </p>
+        <div class="testimony-author">
+          <div class="author-avatar">AL</div>
+          <div>
+            <div class="author-name">A. Lim</div>
+            <div class="author-role">Logistics Coordinator — placed 2023 · Addiction recovery</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ECO COMMITMENT -->
+<section class="eco-section" id="planet">
+  <div class="eco-inner">
+    <div class="eco-grid">
+      <div class="eco-visual reveal">
+        <div class="eco-ring eco-ring-1"></div>
+        <div class="eco-ring eco-ring-2"></div>
+        <div class="eco-ring eco-ring-3"></div>
+        <div class="eco-center">
+          <span class="big-num">B</span>
+          <span class="big-label">Corp Certified</span>
+        </div>
+      </div>
+      <div class="eco-right reveal">
+        <div class="section-label">Our Environmental Commitment</div>
+        <h2 class="section-title">We <em>refuse</em> to separate people from planet.</h2>
+        <p>
+          Marginalized communities bear the heaviest burden of environmental destruction while benefiting the least from its rewards. ROOT holds these injustices together. Every partner employer undergoes our Green Screening — a rigorous review of environmental practices before they can access our community.
+        </p>
+        <div class="eco-badges">
+          <div class="eco-badge">
+            <span class="badge-icon">🌿</span>
+            <span class="badge-text">Carbon-neutral operations since 2021</span>
+          </div>
+          <div class="eco-badge">
+            <span class="badge-icon">🌊</span>
+            <span class="badge-text">Partner employers vetted for environmental compliance</span>
+          </div>
+          <div class="eco-badge">
+            <span class="badge-icon">♻️</span>
+            <span class="badge-text">15% of placements in clean energy & sustainability sectors</span>
+          </div>
+          <div class="eco-badge">
+            <span class="badge-icon">🌱</span>
+            <span class="badge-text">One tree planted for every successful placement</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPLY -->
+<section class="apply-section" id="apply">
+  <div class="apply-inner">
+    <div class="reveal">
+      <div class="section-label">Begin Here</div>
+      <h2 class="section-title">Your next chapter<br><em>starts in the dirt.</em></h2>
+      <p>No judgment. No gatekeeping. Just an honest conversation about where you are and where you want to go.</p>
+    </div>
+    <form class="apply-form reveal" onsubmit="handleSubmit(event)">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" name="first_name" placeholder="Your first name" required>
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" name="last_name" placeholder="Your last name" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" name="email" placeholder="your@email.com" required>
+      </div>
+      <div class="form-group">
+        <label>Primary Barrier (optional — helps us match you)</label>
+        <select name="primary_barrier">
+          <option value="" disabled selected>Select if you're comfortable sharing</option>
+          <option>Criminal / justice record</option>
+          <option>Mental health condition</option>
+          <option>Physical disability</option>
+          <option>Cognitive or sensory disability</option>
+          <option>Addiction / recovery</option>
+          <option>Long-term unemployment</option>
+          <option>Housing instability / homelessness</option>
+          <option>Multiple barriers</option>
+          <option>Prefer not to say</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tell us a little about yourself</label>
+        <textarea name="message" placeholder="What kind of work interests you? What are you good at? What has been the hardest part? There are no wrong answers."></textarea>
+      </div>
+      <button type="submit" class="form-submit">Plant My Application →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="logo">R<span>OO</span>T</span>
+        <p>Second Chance Recruitment for a more just, more human, and more sustainable world.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="#who">Who We Welcome</a></li>
+          <li><a href="#process">The Process</a></li>
+          <li><a href="#stories">Stories</a></li>
+          <li><a href="#planet">Our Planet</a></li>
+          <li><a href="#apply">Apply Now</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Fair Chance Pledge</a></li>
+          <li><a href="#">Employer Portal</a></li>
+          <li><a href="#">Mental Health Toolkit</a></li>
+          <li><a href="#">Legal Aid Partners</a></li>
+          <li><a href="#">Annual Report</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="#">hello@root-recruit.org</a></li>
+          <li><a href="#">Crisis Line: 988</a></li>
+          <li><a href="#">Partner With Us</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Donate</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 ROOT Initiative. A 501(c)(3) nonprofit. All humans welcome.</p>
+      <div class="eco-pledge">🌱 Carbon neutral · B Corp certified</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        entry.target.style.transitionDelay = `${i * 0.05}s`;
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Form submission via FormSubmit AJAX (no redirect)
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('.form-submit');
+    const formData = new FormData(form);
+
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    fetch('https://formsubmit.co/ajax/nuntipat.pi.pi@gmail.com', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      btn.textContent = '\u2713 Application Received \u2014 We\u2019ll be in touch.';
+      btn.style.background = 'var(--sage)';
+      btn.style.color = 'var(--ash)';
+      form.reset();
+    })
+    .catch(error => {
+      btn.textContent = 'Something went wrong. Try again.';
+      btn.style.background = '#c0392b';
+      btn.style.color = '#fff';
+      btn.disabled = false;
+    });
+  }
+
+  // Subtle cursor trail effect
+  const trail = [];
+  document.addEventListener('mousemove', (e) => {
+    const dot = document.createElement('div');
+    dot.style.cssText = `
+      position: fixed;
+      width: 3px;
+      height: 3px;
+      background: rgba(107,124,82,0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      left: ${e.clientX}px;
+      top: ${e.clientY}px;
+      transition: opacity 0.8s;
+    `;
+    document.body.appendChild(dot);
+    trail.push(dot);
+    if (trail.length > 15) {
+      const old = trail.shift();
+      old.style.opacity = '0';
+      setTimeout(() => old.remove(), 800);
+    }
+    setTimeout(() => {
+      dot.style.opacity = '0';
+    }, 100);
+  });
+</script>
+</body>
+</html>
